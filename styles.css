@@ -6,7 +6,19 @@
   box-sizing: border-box;
 }
 
-#app_container {
-  display: flex;
-  flex-direction: row;
+html,
+body {
+  background-color: #272822;
+  font-family: "verdana", sans-serif;
+  color: #f8f8f2;
+}
+
+side-bar {
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 100vh;
+  background-color: #272822;
 }
