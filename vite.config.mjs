@@ -8,11 +8,13 @@ export default defineConfig({
     },
     rollupOptions: {
       input: {
-        index: resolve(__dirname, "src/index.html"),
+        index: resolve(__dirname, "index.html"),
         // collection: resolve(__dirname, "collection.html"),
         // favorites: resolve(__dirname, "favorites.html"),
       },
     },
-    outDir: "build",
+    outDir: "dist/fragment_editor",
   },
+
+  base: "/fragment_editor/",
 });

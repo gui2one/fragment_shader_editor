@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "node ./deploy/deploy_v2.mjs && start chrome https://gui2one.sprayfilm.fr/fragment_editor/"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,10 @@
     "typescript": "^5.8.2"
   },
   "devDependencies": {
+    "basic-ftp": "^5.0.5",
+    "cli-progress": "^3.12.0",
+    "dotenv": "^16.4.7",
+    "get-folder-size": "^5.0.0",
     "vite": "^6.2.2"
   }
 }
