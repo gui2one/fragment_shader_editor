@@ -2,27 +2,26 @@
 import GlslEditor from "glslEditor/build/glslEditor.js";
 import { SideBar } from "./components/side_bar";
 import { SideBarItem } from "./components/side_bar_item";
+import { LocalStore } from "./localstore";
+import { TopBar } from "./components/top_bar";
+
 console.log("main.ts loaded");
 
-let sidebar = new SideBar();
+let localstore = new LocalStore();
+// localstore.add_file("test.glsl", "content before");
+
+let top_bar = new TopBar();
+document.body.appendChild(top_bar);
+
+let sidebar = new SideBar("Fragment Shader Editor");
 document.body.appendChild(sidebar);
-let title = document.createElement("h1");
-title.innerText = sidebar.title;
-sidebar.appendChild(title);
-let item1 = new SideBarItem();
-item1.label = "Item 1";
-item1.onClick = () => {
-  console.log("item 1 clicked");
-};
-sidebar.appendChild(item1);
 
-let item2 = new SideBarItem();
-item2.label = "Item 2";
-item2.onClick = () => {
-  console.log("item 2 clicked");
-};
-sidebar.appendChild(item2);
-
+let new_file_button = new SideBarItem("New File", () => {
+  localstore.add_file("new_file.glsl", "// your code goes here");
+});
+sidebar.appendChild(new_file_button);
+let reset_button = new SideBarItem("Reset", () => {});
+sidebar.appendChild(reset_button);
 let code_editor = document.createElement("div");
 code_editor.id = "code_editor";
 document.body.appendChild(code_editor);
@@ -36,12 +35,19 @@ function init_save() {
     if (e.key == "Control") isCtrl = true;
     if (e.key == "s" && isCtrl == true) {
       //run code for CTRL+S -- ie, save!
-      console.log("save triggered");
+      let cur_name = localstore.get_current_file_name();
+      if (cur_name) {
+        console.log(cur_name);
 
+        localstore.set_file_content(cur_name, glslEditor.getContent());
+      }
+
+      console.log("save triggered");
       return false;
     }
   };
 }
+
 const glslEditor = new GlslEditor(code_editor, {
   canvas_size: 500,
   canvas_draggable: true,
@@ -80,4 +86,9 @@ void main() {
 }`);
 });
 
+window.addEventListener("current-file-changed", (ev: Event) => {
+  let file_name = (ev as CustomEvent).detail;
+
+  glslEditor.setContent(localstore.get_file_content(file_name)!);
+});
 init_save();

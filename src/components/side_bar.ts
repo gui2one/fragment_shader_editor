@@ -1,13 +1,16 @@
 import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
-// import { BaseElement } from "./base";
 import { classMap } from "lit/directives/class-map.js";
 
 @customElement("side-bar")
 export class SideBar extends LitElement {
   @property({ type: String }) title = "My Super Title";
-  @property({ type: Boolean }) opened = false;
+  @property({ type: Boolean }) opened = true;
 
+  constructor(title?: string) {
+    super();
+    if (title) this.title = title;
+  }
   static styles = css`
     :host {
       position: fixed;
@@ -23,7 +26,7 @@ export class SideBar extends LitElement {
       right: 0px;
       z-index: 100001;
     }
-    div {
+    .container {
       position: fixed;
       z-index: 10000;
       right: 0px;
@@ -39,6 +42,10 @@ export class SideBar extends LitElement {
 
       transform: translateX(0px);
     }
+    .title {
+      position: relative;
+      padding: 0.5em;
+    }
   `;
 
   render() {
@@ -46,8 +53,14 @@ export class SideBar extends LitElement {
       <button @click=${() => (this.opened = !this.opened)}>
         ${this.opened ? "close" : "open"}
       </button>
-      <div class=${classMap({ show: this.opened })}>
-        <slot></slot>
+      <div class="container ${classMap({ show: this.opened })}">
+        <div>
+          <div class="title">${this.title}</div>
+
+          <slot></slot>
+
+          <files-list></files-list>
+        </div>
       </div>
     `;
   }

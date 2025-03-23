@@ -11,9 +11,5 @@ body {
   background-color: #272822;
   font-family: "verdana", sans-serif;
   color: #f8f8f2;
-}
-
-side-bar {
-  & div {
-  }
+  user-select: none;
 }
