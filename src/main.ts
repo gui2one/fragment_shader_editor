@@ -35,9 +35,11 @@ function init_save() {
     if (e.key == "Control") isCtrl = true;
     if (e.key == "s" && isCtrl == true) {
       //run code for CTRL+S -- ie, save!
-      let cur_name = localstore.get_current_file_name();
+      let store = new LocalStore();
+
+      let cur_name = store.get_current_file_name();
       if (cur_name) {
-        console.log(cur_name);
+        console.log(cur_name, "!!!!!");
 
         localstore.set_file_content(cur_name, glslEditor.getContent());
       }

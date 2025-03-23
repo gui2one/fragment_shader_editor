@@ -19,6 +19,8 @@ export class LocalStore {
     }
   }
   save() {
+    console.log(this.data);
+
     localStorage.setItem(this.name, JSON.stringify(this.data));
   }
 
@@ -54,6 +56,8 @@ export class LocalStore {
 
   set_current_file(name: string) {
     if (this.data) {
+      console.log("Set current_file", name);
+
       this.data.current_file = name;
       this.save();
     }
