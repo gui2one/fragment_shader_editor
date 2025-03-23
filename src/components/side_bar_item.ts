@@ -1,10 +1,12 @@
 import { html, LitElement } from "lit";
-import { customElement } from "lit/decorators.js";
-import { BaseElement } from "./base";
+import { customElement, property } from "lit/decorators.js";
+// import { BaseElement } from "./base";
 
 @customElement("side-bar-item")
-export class SideBar extends BaseElement {
+export class SideBarItem extends LitElement {
+  @property({ type: String }) label = "Menu Item";
+  @property({ type: Function }) onClick = () => {};
   render() {
-    return html` <div>Side Bar Item</div> `;
+    return html` <div @click=${this.onClick}>${this.label}</div> `;
   }
 }

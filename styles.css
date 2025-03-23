@@ -14,11 +14,6 @@ body {
 }
 
 side-bar {
-  position: fixed;
-  z-index: 10000;
-  left: 0;
-  top: 0;
-  width: 200px;
-  height: 100vh;
-  background-color: #272822;
+  & div {
+  }
 }
