@@ -58,6 +58,18 @@ export class LocalStore {
       this.save();
     }
   }
+  rename_current_file(old_name: string, new_name: string) {
+    if (this.data) {
+      this.data.shader_files.some((file) => {
+        if (file.name === old_name) {
+          file.name = new_name;
+        }
+      });
+
+      this.data.current_file = new_name;
+      this.save();
+    }
+  }
   add_file(name: string, content: string) {
     if (this.file_exists(name)) return;
     this.data?.shader_files?.push({ name, content });
