@@ -12,7 +12,7 @@ export class CurrentFileName extends LitElement {
     window.addEventListener(CustomEvents.CurrentFileChanged, (ev: Event) => {
       this.file_name = (ev as CustomEvent).detail;
     });
-    window.addEventListener(CustomEvents.FileCreated, (ev: Event) => {
+    window.addEventListener(CustomEvents.FileCreated, () => {
       this.file_name = "new_file.glsl";
     });
   }

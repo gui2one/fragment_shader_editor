@@ -99,10 +99,10 @@ window.addEventListener(CustomEvents.CurrentFileChanged, (ev: Event) => {
   glslEditor.setContent(localstore.get_file_content(file_name)!);
 });
 
-window.addEventListener(CustomEvents.FileCreated, (ev: Event) => {
+window.addEventListener(CustomEvents.FileCreated, () => {
   glslEditor.setContent("// your code goes here");
 });
-window.addEventListener(CustomEvents.FileDeleted, (ev: Event) => {
+window.addEventListener(CustomEvents.FileDeleted, () => {
   localstore.set_current_file(localstore.get_shader_files()[0].name);
   // localstore.set_current_file("aaa.glsl");
 });
