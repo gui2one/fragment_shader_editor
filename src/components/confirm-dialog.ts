@@ -4,24 +4,34 @@ import { customElement } from "lit/decorators.js";
 @customElement("confirm-dialog")
 export class ConfirmDialog extends LitElement {
   cb: Function;
-  constructor(cb: () => void) {
+  msg: string;
+  constructor(msg: string, cb: () => void) {
     super();
+    this.msg = msg;
     this.cb = cb;
   }
+
   static styles = css`
     :host {
-      display: block;
+      display: flex;
       position: fixed;
+      left: 0;
+      top: 0;
       z-index: 1000000;
       background-color: black;
+      width: 100%;
+      height: 100vh;
       color: white;
+
+      align-items: center;
+      justify-content: center;
     }
   `;
 
   render() {
     return html`
       <div class="container">
-        <div>Confirm Dialog</div>
+        <div>${this.msg}</div>
         <div class="buttons">
           <button
             @click=${() => {

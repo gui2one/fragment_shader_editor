@@ -9,7 +9,6 @@ import { CustomEvents } from "./events";
 console.log("main.ts loaded");
 
 let localstore = new LocalStore();
-// localstore.add_file("test.glsl", "content before");
 
 let top_bar = new TopBar();
 document.body.appendChild(top_bar);
@@ -17,8 +16,27 @@ document.body.appendChild(top_bar);
 let sidebar = new SideBar("Fragment Shader Editor");
 document.body.appendChild(sidebar);
 
+const default_glsl_code = `#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x *= u_resolution.x/u_resolution.y;
+
+    vec3 color = vec3(0.);
+    color = vec3(st.x,st.y,abs(sin(u_time)));
+
+    gl_FragColor = vec4(color,1.0);
+}
+`;
+
 let new_file_button = new SideBarItem("New File", () => {
-  localstore.add_file("new_file.glsl", "// your code goes here");
+  localstore.add_file("new_file.glsl", default_glsl_code);
   localstore.set_current_file("new_file.glsl");
   let created_ev = new CustomEvent(CustomEvents.FileCreated, {
     detail: "new file !!!!",
@@ -44,12 +62,10 @@ function init_save() {
 
       let cur_name = localstore.get_current_file_name();
       if (cur_name) {
-        console.log(cur_name, "!!!!!");
-
         localstore.set_file_content(cur_name, glslEditor.getContent());
       }
 
-      console.log("save triggered");
+      console.log(`saved file ${cur_name}`);
       return false;
     }
   };
@@ -65,45 +81,12 @@ const glslEditor = new GlslEditor(code_editor, {
   menu: true,
 });
 
-const btn1 = document.createElement("button");
-btn1.id = "btn1";
-btn1.innerText = "btn1";
-document.body.appendChild(btn1);
-btn1.addEventListener("click", () => {
-  console.log(glslEditor);
-  glslEditor.setContent(`// Author:
-// Title:
-
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-uniform vec2 u_resolution;
-uniform vec2 u_mouse;
-uniform float u_time;
-
-void main() {
-    vec2 st = gl_FragCoord.xy/u_resolution.xy;
-    st.x *= u_resolution.x/u_resolution.y;
-
-    vec3 color = vec3(0.);
-    color = vec3(st.x,st.y,abs(sin(u_time)));
-
-    gl_FragColor = vec4(color,1.);
-}`);
-});
-
 window.addEventListener(CustomEvents.CurrentFileChanged, (ev: Event) => {
   let file_name = (ev as CustomEvent).detail;
-
   glslEditor.setContent(localstore.get_file_content(file_name)!);
 });
 
-window.addEventListener(CustomEvents.FileCreated, () => {
-  glslEditor.setContent("// your code goes here");
-});
 window.addEventListener(CustomEvents.FileDeleted, () => {
   localstore.set_current_file(localstore.get_shader_files()[0].name);
-  // localstore.set_current_file("aaa.glsl");
 });
 init_save();

@@ -33,16 +33,16 @@ export class CurrentFileName extends LitElement {
   file_name_no_extension() {
     return this.file_name.split(".")[0];
   }
-  onClickEdit(ev: Event) {
+  onClickEdit() {
     let localstore = new LocalStore();
-    console.log(ev);
+
     let input = this.shadowRoot?.querySelector(".name") as HTMLDivElement;
     let old_name = localstore.get_current_file_name();
     input?.setAttribute("contenteditable", "true");
     input?.focus();
     input?.addEventListener("blur", (ev: Event) => {
       input?.removeAttribute("contenteditable");
-      console.log((ev.target as HTMLDivElement).innerText);
+
       let new_name = (ev.target as HTMLDivElement).innerText;
       new_name += ".glsl";
       localstore.rename_current_file(old_name!, new_name);

@@ -21,7 +21,6 @@ export class LocalStore {
     }
   }
   save() {
-    console.log(this.data);
     localStorage.setItem(this.name, JSON.stringify(this.data));
   }
 
@@ -62,8 +61,6 @@ export class LocalStore {
   set_current_file(name: string) {
     this.load();
     if (this.data) {
-      console.log("Set current_file", name);
-
       this.data.current_file = name;
       this.save();
       let ev = new CustomEvent(CustomEvents.CurrentFileChanged, {
@@ -96,12 +93,9 @@ export class LocalStore {
   delete_file(name: string) {
     this.load();
     if (this.data) {
-      // console.log(this.data.shader_files);
       this.data.current_file = this.data.shader_files[0].name;
 
       this.data.shader_files = this.data?.shader_files?.filter((file) => {
-        console.log(file.name, name);
-
         return file.name !== name;
       });
       this.save();
@@ -111,7 +105,6 @@ export class LocalStore {
     this.load();
     if (this.data) {
       this.data.shader_files = this.data?.shader_files?.map((file) => {
-        console.log("looping through files", file.name);
         if (file.name === name) file.content = content;
         return file;
       });

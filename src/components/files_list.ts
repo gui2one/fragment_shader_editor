@@ -24,14 +24,10 @@ export class FilesList extends LitElement {
     super();
     this.update_list();
     window.addEventListener(CustomEvents.CurrentFileRenamed, () => {
-      console.log("CurrentFileRenamed");
-
       this.update_list();
       this.requestUpdate();
     });
     window.addEventListener(CustomEvents.FileCreated, () => {
-      console.log("File Created");
-
       this.update_list();
       this.requestUpdate();
     });
@@ -69,11 +65,12 @@ export class FilesList extends LitElement {
   }
 
   onDeleteClick(ev: Event, index: number) {
-    let dialog = new ConfirmDialog(() => {
+    let file_name = this.files[index].name;
+    let dialog = new ConfirmDialog(`delete file ${file_name}`, () => {
       ev.preventDefault();
       ev.stopPropagation();
       let localstore = new LocalStore();
-      localstore.delete_file(this.files[index].name);
+      localstore.delete_file(file_name);
       let custom_ev = new CustomEvent(CustomEvents.FileDeleted, {
         detail: null,
       });
