@@ -19,6 +19,11 @@ document.body.appendChild(sidebar);
 
 let new_file_button = new SideBarItem("New File", () => {
   localstore.add_file("new_file.glsl", "// your code goes here");
+  localstore.set_current_file("new_file.glsl");
+  let created_ev = new CustomEvent(CustomEvents.FileCreated, {
+    detail: "new file !!!!",
+  });
+  window.dispatchEvent(created_ev);
 });
 sidebar.appendChild(new_file_button);
 let reset_button = new SideBarItem("Reset", () => {});
@@ -92,5 +97,9 @@ window.addEventListener(CustomEvents.CurrentFileChanged, (ev: Event) => {
   let file_name = (ev as CustomEvent).detail;
 
   glslEditor.setContent(localstore.get_file_content(file_name)!);
+});
+
+window.addEventListener(CustomEvents.FileCreated, (ev: Event) => {
+  glslEditor.setContent("// your code goes here");
 });
 init_save();

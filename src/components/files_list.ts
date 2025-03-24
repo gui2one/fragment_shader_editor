@@ -30,6 +30,12 @@ export class FilesList extends LitElement {
       this.update_list();
       this.requestUpdate();
     });
+    window.addEventListener(CustomEvents.FileCreated, () => {
+      console.log("File Created");
+
+      this.update_list();
+      this.requestUpdate();
+    });
   }
   static styles = css`
     :host {
