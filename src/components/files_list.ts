@@ -34,6 +34,14 @@ export class FilesList extends LitElement {
       font-weight: bold;
       font-size: 0.8em;
     }
+    .file-name {
+      font-family: "Courier New", Courier, monospace;
+      margin: 0.5em 0;
+      cursor: pointer;
+      &:hover {
+        font-weight: bold;
+      }
+    }
   `;
   update_list() {
     let localstore = new LocalStore();
@@ -45,6 +53,7 @@ export class FilesList extends LitElement {
       ${this.files.map((file) => {
         return html`
           <div
+            class="file-name"
             @click=${() => {
               this.current_file = file.name;
             }}
