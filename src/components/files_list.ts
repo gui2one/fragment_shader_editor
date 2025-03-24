@@ -3,6 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { LocalStore, ShaderFile } from "../localstore";
 import { CustomEvents } from "../events";
 import { classMap } from "lit/directives/class-map.js";
+import { ConfirmDialog } from "./confirm-dialog";
 
 @customElement("files-list")
 export class FilesList extends LitElement {
@@ -68,15 +69,18 @@ export class FilesList extends LitElement {
   }
 
   onDeleteClick(ev: Event, index: number) {
-    ev.preventDefault();
-    ev.stopPropagation();
-    let localstore = new LocalStore();
-    localstore.delete_file(this.files[index].name);
-    let custom_ev = new CustomEvent(CustomEvents.FileDeleted, {
-      detail: null,
+    let dialog = new ConfirmDialog(() => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      let localstore = new LocalStore();
+      localstore.delete_file(this.files[index].name);
+      let custom_ev = new CustomEvent(CustomEvents.FileDeleted, {
+        detail: null,
+      });
+      window.dispatchEvent(custom_ev);
+      this.update_list();
     });
-    window.dispatchEvent(custom_ev);
-    this.update_list();
+    document.body.appendChild(dialog);
   }
 
   render() {
