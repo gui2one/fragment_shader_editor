@@ -16,10 +16,6 @@ export class FilesList extends LitElement {
   set current_file(value: string | undefined) {
     if (value === this.current_file) return;
     this.store.set_current_file(value!);
-    let ev = new CustomEvent(CustomEvents.CurrentFileChanged, {
-      detail: value,
-    });
-    window.dispatchEvent(ev);
   }
   constructor() {
     super();
@@ -61,11 +57,24 @@ export class FilesList extends LitElement {
   update_list() {
     let localstore = new LocalStore();
     this.files = localstore.get_shader_files();
+    this.requestUpdate();
+  }
+
+  onDeleteClick(ev: Event, index: number) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    let localstore = new LocalStore();
+    localstore.delete_file(this.files[index].name);
+    let custom_ev = new CustomEvent(CustomEvents.FileDeleted, {
+      detail: null,
+    });
+    window.dispatchEvent(custom_ev);
+    this.update_list();
   }
 
   render() {
     return html`<div class="title">Your Files (local storage)</div>
-      ${this.files.map((file) => {
+      ${this.files.map((file, index) => {
         return html`
           <div
             class="file-name"
@@ -74,6 +83,12 @@ export class FilesList extends LitElement {
             }}
           >
             ${file.name}
+            <span
+              @click=${(ev: Event) => {
+                this.onDeleteClick(ev, index);
+              }}
+              >X</span
+            >
           </div>
         `;
       })} `;

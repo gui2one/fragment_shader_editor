@@ -1,3 +1,5 @@
+import { CustomEvents } from "./events";
+
 export type ShaderFile = {
   name: string;
   content: string;
@@ -64,6 +66,10 @@ export class LocalStore {
 
       this.data.current_file = name;
       this.save();
+      let ev = new CustomEvent(CustomEvents.CurrentFileChanged, {
+        detail: name,
+      });
+      window.dispatchEvent(ev);
     }
   }
   rename_current_file(old_name: string, new_name: string) {
@@ -87,10 +93,11 @@ export class LocalStore {
     this.save();
   }
 
-  remove_file(name: string) {
+  delete_file(name: string) {
     this.load();
     if (this.data) {
-      console.log(this.data.shader_files);
+      // console.log(this.data.shader_files);
+      this.data.current_file = this.data.shader_files[0].name;
 
       this.data.shader_files = this.data?.shader_files?.filter((file) => {
         console.log(file.name, name);
