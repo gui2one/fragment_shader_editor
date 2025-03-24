@@ -20,7 +20,6 @@ export class LocalStore {
   }
   save() {
     console.log(this.data);
-
     localStorage.setItem(this.name, JSON.stringify(this.data));
   }
 
@@ -30,6 +29,7 @@ export class LocalStore {
   }
 
   get_shader_files(): ShaderFile[] {
+    this.load();
     if (!this.data) return [];
     if (!this.data.shader_files) return [];
 
@@ -37,6 +37,7 @@ export class LocalStore {
   }
 
   private file_exists(name: string): boolean {
+    this.load();
     if (!this.data) return false;
     if (!this.data.shader_files) return false;
 
@@ -44,10 +45,12 @@ export class LocalStore {
   }
 
   get_current_file_name(): string | undefined {
+    this.load();
     if (!this.data) return undefined;
     return this.data.current_file;
   }
   get_file_content(file_name: string): string | undefined {
+    this.load();
     if (!this.data) return undefined;
     if (!this.data.current_file) return undefined;
     return this.data.shader_files?.find((file) => file.name === file_name)
@@ -55,6 +58,7 @@ export class LocalStore {
   }
 
   set_current_file(name: string) {
+    this.load();
     if (this.data) {
       console.log("Set current_file", name);
 
@@ -63,11 +67,13 @@ export class LocalStore {
     }
   }
   rename_current_file(old_name: string, new_name: string) {
+    this.load();
     if (this.data) {
-      this.data.shader_files.some((file) => {
+      this.data.shader_files = this.data.shader_files.map((file) => {
         if (file.name === old_name) {
           file.name = new_name;
         }
+        return file;
       });
 
       this.data.current_file = new_name;
@@ -75,12 +81,14 @@ export class LocalStore {
     }
   }
   add_file(name: string, content: string) {
+    this.load();
     if (this.file_exists(name)) return;
     this.data?.shader_files?.push({ name, content });
     this.save();
   }
 
   remove_file(name: string) {
+    this.load();
     if (this.data) {
       console.log(this.data.shader_files);
 
@@ -93,8 +101,10 @@ export class LocalStore {
     }
   }
   set_file_content(name: string, content: string) {
+    this.load();
     if (this.data) {
       this.data.shader_files = this.data?.shader_files?.map((file) => {
+        console.log("looping through files", file.name);
         if (file.name === name) file.content = content;
         return file;
       });
