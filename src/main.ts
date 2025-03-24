@@ -4,6 +4,7 @@ import { SideBar } from "./components/side_bar";
 import { SideBarItem } from "./components/side_bar_item";
 import { LocalStore } from "./localstore";
 import { TopBar } from "./components/top_bar";
+import { CustomEvents } from "./events";
 
 console.log("main.ts loaded");
 
@@ -87,7 +88,7 @@ void main() {
 }`);
 });
 
-window.addEventListener("current-file-changed", (ev: Event) => {
+window.addEventListener(CustomEvents.CurrentFileChanged, (ev: Event) => {
   let file_name = (ev as CustomEvent).detail;
 
   glslEditor.setContent(localstore.get_file_content(file_name)!);

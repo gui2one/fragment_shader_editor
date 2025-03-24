@@ -1,6 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { LocalStore } from "../localstore";
+import { CustomEvents } from "../events";
 
 @customElement("current-file-name")
 export class CurrentFileName extends LitElement {
@@ -8,7 +9,7 @@ export class CurrentFileName extends LitElement {
 
   constructor() {
     super();
-    window.addEventListener("current-file-changed", (ev: Event) => {
+    window.addEventListener(CustomEvents.CurrentFileChanged, (ev: Event) => {
       this.file_name = (ev as CustomEvent).detail;
     });
   }
@@ -42,6 +43,10 @@ export class CurrentFileName extends LitElement {
       let new_name = (ev.target as HTMLDivElement).innerText;
       new_name += ".glsl";
       localstore.rename_current_file(old_name!, new_name);
+      let rename_ev = new CustomEvent(CustomEvents.CurrentFileRenamed, {
+        detail: new_name,
+      });
+      window.dispatchEvent(rename_ev);
     });
   }
   render() {

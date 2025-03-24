@@ -1,6 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { LocalStore, ShaderFile } from "../localstore";
+import { CustomEvents } from "../events";
 
 @customElement("files-list")
 export class FilesList extends LitElement {
@@ -15,12 +16,20 @@ export class FilesList extends LitElement {
   set current_file(value: string | undefined) {
     if (value === this.current_file) return;
     this.store.set_current_file(value!);
-    let ev = new CustomEvent("current-file-changed", { detail: value });
+    let ev = new CustomEvent(CustomEvents.CurrentFileChanged, {
+      detail: value,
+    });
     window.dispatchEvent(ev);
   }
   constructor() {
     super();
     this.update_list();
+    window.addEventListener(CustomEvents.CurrentFileRenamed, () => {
+      console.log("CurrentFileRenamed");
+
+      this.update_list();
+      this.requestUpdate();
+    });
   }
   static styles = css`
     :host {
