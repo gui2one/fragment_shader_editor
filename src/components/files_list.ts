@@ -2,6 +2,7 @@ import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { LocalStore, ShaderFile } from "../localstore";
 import { CustomEvents } from "../events";
+import { classMap } from "lit/directives/class-map.js";
 
 @customElement("files-list")
 export class FilesList extends LitElement {
@@ -17,6 +18,7 @@ export class FilesList extends LitElement {
     if (value === this.current_file) return;
     this.store.set_current_file(value!);
   }
+
   constructor() {
     super();
     this.update_list();
@@ -52,6 +54,11 @@ export class FilesList extends LitElement {
       &:hover {
         font-weight: bold;
       }
+
+      &.active {
+        font-weight: bold;
+        background-color: yellow;
+      }
     }
   `;
   update_list() {
@@ -77,7 +84,9 @@ export class FilesList extends LitElement {
       ${this.files.map((file, index) => {
         return html`
           <div
-            class="file-name"
+            class="file-name ${classMap({
+              active: this.current_file === file.name,
+            })}"
             @click=${() => {
               this.current_file = file.name;
             }}
