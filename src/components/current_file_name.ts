@@ -48,6 +48,12 @@ export class CurrentFileName extends LitElement {
       });
       window.dispatchEvent(rename_ev);
     });
+    input?.addEventListener("keypress", (ev: KeyboardEvent) => {
+      if (ev.key === "Enter") {
+        ev.preventDefault();
+        input?.blur();
+      }
+    });
   }
   render() {
     return html`
