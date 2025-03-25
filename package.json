@@ -7,13 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "node ./deploy/deploy_v2.mjs && start chrome https://gui2one.sprayfilm.fr/fragment_editor/"
+    "deploy": "node ./node_modules/gui2one-ftp-deploy && start chrome https://gui2one.sprayfilm.fr/fragment_editor/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "glslEditor": "^0.0.24",
+    "gui2one-ftp-deploy": "github:gui2one/gui2one-ftp-deploy",
     "lit": "^3.2.1",
     "pixijs": "^7.1.4",
     "typescript": "^5.8.2"
