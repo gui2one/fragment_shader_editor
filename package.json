@@ -7,18 +7,20 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "copy-shaders": "copy-folder-util ./shaders ./dist/shaders",
     "deploy": "node ./node_modules/gui2one-ftp-deploy && start chrome https://gui2one.sprayfilm.fr/fragment_editor/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "glslEditor": "^0.0.24",
+    "glslEditor": "github:gui2one/glslEditor",
     "gui2one-ftp-deploy": "github:gui2one/gui2one-ftp-deploy",
     "lit": "^3.2.1",
     "typescript": "^5.8.2"
   },
   "devDependencies": {
+    "copy-folder-util": "^1.1.5",
     "vite": "^6.2.2"
   }
 }
