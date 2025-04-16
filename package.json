@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "copy-shaders": "copy-folder-util ./shaders ./dist/shaders",
-    "deploy": "node ./node_modules/gui2one-ftp-deploy && start chrome https://gui2one.sprayfilm.fr/fragment_editor/"
+    "deploy": "node ./node_modules/gui2one-ftp-deploy && start chrome https://codeplay.fr/fragment_editor/"
   },
   "keywords": [],
   "author": "",
